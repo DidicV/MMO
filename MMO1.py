@@ -2,7 +2,7 @@ from scipy.optimize import linprog
 
 def LP(objective, variables, constranins, text):
 
-	result = linprog(c=objective, A_ub=variables, b_ub=constranins, method="revised simplex")
+	result = linprog(c=objective, A_ub=variables, b_ub=constranins, method="highs")
 
 	print(text,abs(result.fun))
 	print("X = ", end="")
