@@ -4,7 +4,7 @@ def LP(objective, variables, constranins, text):
 
 	result = linprog(c=objective, A_ub=variables, b_ub=constranins, method="highs")
 
-	print(text,abs(result.fun))
+	print(text, round( (abs(result.fun)) ,5))
 	print("X = ", end="")
 	for x in result.x:
 		print(round(x,5), end=",   ")
