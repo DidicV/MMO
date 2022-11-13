@@ -1,8 +1,5 @@
 from pulp import *
-
 from prettytable import PrettyTable
-
-
 
 def Transport(warehouses, projects, demand, supply, costs):
 
@@ -13,8 +10,6 @@ def Transport(warehouses, projects, demand, supply, costs):
     Routes = [(w, b) for w in warehouses for b in projects]
 
     var = LpVariable.dicts("", (warehouses, projects), 0, None, LpInteger)
-
-
 
     prob += (
         lpSum([var[w][b] * costs[w][b] for (w, b) in Routes]),
@@ -72,7 +67,6 @@ def Transport(warehouses, projects, demand, supply, costs):
     print("Objective function value", round(value(prob.objective),1))
 
 
-
 # SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY 
 # OFERTA OFERTA OFERTA OFERTA OFERTA OFERTA OFERTA
 # -> -> -> -> -> -> -> -> -> -> -> -> -> -> -> -> ->
@@ -84,11 +78,7 @@ supply = {"Factory1": 100, "Factory2": 200, "Factory3":300}
 # SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY 
 
 
-
-
-
 projects = ["Customer1", "Customer2", "Customer3"]
-
 
 demand = {
     "Customer1": 200,
@@ -96,55 +86,11 @@ demand = {
     "Customer3": 200,
 }
 
-
 costs = [  
     [40, 47, 80],
     [72, 36, 58],  
     [24, 61, 71]
-
 ]
-
-
-# SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY 
-# OFERTA OFERTA OFERTA OFERTA OFERTA OFERTA OFERTA
-# -> -> -> -> -> -> -> -> -> -> -> -> -> -> -> -> ->
-warehouses = ["Bomba", "Maximum", "Enter","Smart","Darwin"]
-
-supply = {  "Bomba": 1000, 
-            "Maximum": 2000, 
-            "Enter":4000, 
-            "Smart":1500, 
-            "Darwin":3000}
-# -> -> -> -> -> -> -> -> -> -> -> -> -> -> -> -> ->
-# OFERTA OFERTA OFERTA OFERTA OFERTA OFERTA OFERTA
-# SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY 
-
-
-
-
-
-projects = ["Chisinau", "Balti", "Soroca", "Cahul", "Ungheni", "Rezina"]
-
-
-demand = {
-    "Chisinau": 5000,
-    "Balti": 1000,
-    "Soroca": 700,
-    "Cahul": 1500,
-    "Ungheni": 2000,
-    "Rezina": 700,
-}
-
-
-costs = [  
-    [20, 40, 30, 15, 27, 23],
-    [98, 54, 32, 64, 43, 97], 
-    [43, 84, 36, 70, 75, 23],
-    [13, 64, 68, 25, 95, 42],
-    [38, 41, 84, 31, 42, 84]
-
-]
-
 
 
 Transport(warehouses, projects, demand, supply, costs)
