@@ -21,21 +21,7 @@ def Transport(warehouses, projects, demand, supply, costs):
     )
 
 
-    if sum(demand.values()) <= sum(supply.values()):
-
-        for w in warehouses:
-            prob += (
-                lpSum([var[w][b] for b in projects]) <= supply[w],
-                "%s" % w,
-            )
-
-        for b in projects:
-            prob += (
-                lpSum([var[w][b] for w in warehouses]) >= demand[b],
-                "%s" % b,
-            )
-
-    else:
+    if sum(demand.values()) == sum(supply.values()):
 
         for w in warehouses:
             prob += (
@@ -45,7 +31,34 @@ def Transport(warehouses, projects, demand, supply, costs):
 
         for b in projects:
             prob += (
+                lpSum([var[w][b] for w in warehouses]) == demand[b],
+                "%s" % b,
+            )
+
+    elif sum(demand.values()) > sum(supply.values()):
+        for w in warehouses:
+            prob += (
+                lpSum([var[w][b] for b in projects]) == supply[w],
+                "%s" % w,
+            )
+
+        for b in projects:
+            prob += (
                 lpSum([var[w][b] for w in warehouses]) <= demand[b],
+                "%s" % b,
+            )     
+
+    else:
+
+        for w in warehouses:
+            prob += (
+                lpSum([var[w][b] for b in projects]) <= supply[w],
+                "%s" % w,
+            )
+
+        for b in projects:
+            prob += (
+                lpSum([var[w][b] for w in warehouses]) == demand[b],
                 "%s" % b,
             )     
 
