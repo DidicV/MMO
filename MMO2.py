@@ -3,6 +3,10 @@ from prettytable import PrettyTable
 
 def Transport(warehouses, projects, demand, supply, costs):
 
+    print(sum(demand.values()))
+
+    print(sum(supply.values()))
+
     costs = makeDict([warehouses, projects], costs, 0)
 
     prob = LpProblem("", LpMinimize)
@@ -16,17 +20,34 @@ def Transport(warehouses, projects, demand, supply, costs):
         "",
     )
 
-    for w in warehouses:
-        prob += (
-            lpSum([var[w][b] for b in projects]) <= supply[w],
-            "%s" % w,
-        )
 
-    for b in projects:
-        prob += (
-            lpSum([var[w][b] for w in warehouses]) >= demand[b],
-            "%s" % b,
-        )
+    if sum(demand.values()) <= sum(supply.values()):
+
+        for w in warehouses:
+            prob += (
+                lpSum([var[w][b] for b in projects]) <= supply[w],
+                "%s" % w,
+            )
+
+        for b in projects:
+            prob += (
+                lpSum([var[w][b] for w in warehouses]) >= demand[b],
+                "%s" % b,
+            )
+
+    else:
+
+        for w in warehouses:
+            prob += (
+                lpSum([var[w][b] for b in projects]) == supply[w],
+                "%s" % w,
+            )
+
+        for b in projects:
+            prob += (
+                lpSum([var[w][b] for w in warehouses]) <= demand[b],
+                "%s" % b,
+            )     
 
     prob.solve()
 
@@ -67,29 +88,114 @@ def Transport(warehouses, projects, demand, supply, costs):
     print("Objective function value", round(value(prob.objective),1))
 
 
+
+
 # SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY 
 # OFERTA OFERTA OFERTA OFERTA OFERTA OFERTA OFERTA
 # -> -> -> -> -> -> -> -> -> -> -> -> -> -> -> -> ->
-warehouses = ["Factory1", "Factory2", "Factory3"]
+warehouses = ["Alabama", "Florida", "Idaho", "Kansas", "Oregon", "Texas"]
 
-supply = {"Factory1": 100, "Factory2": 200, "Factory3":300}
+supply = {"Alabama": 1100, "Florida": 1400, "Idaho":600, "Kansas":1200, "Oregon":1300, "Texas":400}
 # -> -> -> -> -> -> -> -> -> -> -> -> -> -> -> -> ->
 # OFERTA OFERTA OFERTA OFERTA OFERTA OFERTA OFERTA
 # SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY 
 
 
-projects = ["Customer1", "Customer2", "Customer3"]
+projects = ["Adobe", "IBM", "Nike", "Nvidia", "Tesla"]
 
 demand = {
-    "Customer1": 200,
-    "Customer2": 200,
-    "Customer3": 200,
+    "Adobe": 750,
+    "IBM": 2000,
+    "Nike": 1500,
+    "Nvidia": 750,
+    "Tesla": 1000,
 }
 
 costs = [  
-    [40, 47, 80],
-    [72, 36, 58],  
-    [24, 61, 71]
+    [41, 45, 80, 76, 48],
+    [27, 66, 32, 12, 45],
+    [12, 43, 64, 12, 63],
+    [28, 12, 65, 38, 76],
+    [76, 34, 76, 36, 54],
+    [45, 45, 37, 12, 54]
+]
+
+
+Transport(warehouses, projects, demand, supply, costs)
+
+
+
+
+#DEMAND > SUPPLY
+
+# SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY 
+# OFERTA OFERTA OFERTA OFERTA OFERTA OFERTA OFERTA
+# -> -> -> -> -> -> -> -> -> -> -> -> -> -> -> -> ->
+warehouses = ["Alabama", "Florida", "Idaho", "Kansas", "Oregon", "Texas"]
+
+supply = {"Alabama": 1100, "Florida": 1400, "Idaho":600, "Kansas":1200, "Oregon":1300, "Texas":400}
+# -> -> -> -> -> -> -> -> -> -> -> -> -> -> -> -> ->
+# OFERTA OFERTA OFERTA OFERTA OFERTA OFERTA OFERTA
+# SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY 
+
+
+projects = ["Adobe", "IBM", "Nike", "Nvidia", "Tesla"]
+
+demand = {
+    "Adobe": 950,
+    "IBM": 2100,
+    "Nike": 1500,
+    "Nvidia": 800,
+    "Tesla": 1000
+}
+
+costs = [  
+    [41, 45, 80, 76, 48],
+    [27, 66, 32, 12, 45],
+    [12, 43, 64, 12, 63],
+    [28, 12, 65, 38, 76],
+    [76, 34, 76, 36, 54],
+    [45, 45, 37, 12, 54]
+]
+
+
+Transport(warehouses, projects, demand, supply, costs)
+
+
+
+
+
+
+#DEMAND < SUPPLY
+
+# SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY 
+# OFERTA OFERTA OFERTA OFERTA OFERTA OFERTA OFERTA
+# -> -> -> -> -> -> -> -> -> -> -> -> -> -> -> -> ->
+warehouses = ["Alabama", "Florida", "Idaho", "Kansas", "Oregon", "Texas"]
+
+supply = {"Alabama": 1150, "Florida": 1500, "Idaho":600, "Kansas":1200, "Oregon":1350, "Texas":450}
+# -> -> -> -> -> -> -> -> -> -> -> -> -> -> -> -> ->
+# OFERTA OFERTA OFERTA OFERTA OFERTA OFERTA OFERTA
+# SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY SUPPLY 
+
+
+projects = ["Adobe", "IBM", "Nike", "Nvidia", "Tesla"]
+
+demand = {
+    "Adobe": 750,
+    "IBM": 2000,
+    "Nike": 1500,
+    "Nvidia": 750,
+    "Tesla": 1000
+}
+
+costs = [  
+    [41, 45, 80, 76, 48],
+    [27, 66, 32, 12, 45],
+    [12, 43, 64, 12, 63],
+    [28, 12, 65, 38, 76],
+    [76, 34, 76, 36, 54],
+    [45, 45, 37, 12, 54]
 ]
 
 
