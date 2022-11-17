@@ -27,3 +27,11 @@ print("Max B: ",max_b)
 
 print("Min A result: ", max(min_a))
 print("Max B result: ", min(max_b))
+
+
+
+import nashpy as nash
+import numpy as np
+A = np.array([[0, -1, 1], [1, 0, -1], [-1, 1, 0]])
+rps = nash.Game(A)
+print("Re ",rps)
